@@ -17,25 +17,25 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 1. Goto **System Application -> Studio**
 
-    ![](./images/studio_initial.png)
+    ![](./images/section0/studio_initial.png)
 
 2. Click on **Import From Source Control**
  
-    ![](./images/import_application.png)
+    ![](./images/section0/import_application.png)
 
 3. Set the URL as `https://github.com/amilaSuriarachchi/knowledge.git`
 
 4. Click **Import**
 
-    ![](./images/import_application_sucess.png)
+    ![](./images/section0/import_application_sucess.png)
 
 5. Click **Select Application**
 
-    ![](./images/select_application.png)
+    ![](./images/section0/select_application.png)
 
 6. Click **Sales**
 
-    ![](./images/sales.png)
+    ![](./images/section0/sales.png)
 
 
 
