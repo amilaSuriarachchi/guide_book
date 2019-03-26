@@ -107,7 +107,7 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 2. Click on **New**
 
-    ![](./images/section1/scheduled_import_new.png)
+    ![](./images/section2/scheduled_import_new.png)
 
 3. Set **Name** : Sales Import
 
@@ -115,20 +115,18 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 5. Check **Execute pre-import script and set the following **Pre script**
 
-    Script:
     ```javascript
     gs.log('Starting import with ' + import_set.name);
     ```
 
 6. Check **Execute post-import script** and set the following **Post script**
     
-    Script:
     ```javascript
     gs.log('Finishing import with ' + import_set.name);
     ```
 
 7. Right click on top panel and click **Save**
 
-    ![](./images/section1/scheduled_import.png) 
+    ![](./images/section2/scheduled_import.png) 
 
  
