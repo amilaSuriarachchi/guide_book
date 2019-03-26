@@ -45,7 +45,7 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 ## Creating **Sales Data Source**
 
-1. Go to **System Import Sets -> Administration -> Data Sources**
+1. Go to **System Import Sets** -> **Administration** -> **Data Sources**
 
 2. Click **New**
 
@@ -95,4 +95,40 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 4. Do the same to *u_order_date*
 
+# Section 2 : Create a **Scheduled Import** and Import Data
 
+## Section Goal
+
+**Scheduled Imports** are used to periodically fetch data into ServiceNow instances. When importing data first it creates an import set and imports data into it. We can monitor the progress of the import through the import set. In this section we creates a schedlued import and execute it. Then monitor the performance through import set run statistics. We will see how we can detect perfomance bottle necks using **Slow Queries** and how to stop transformations at the middle if required.
+
+## Creating **Scheduled Import**
+
+1. Goto **System Import Sets** -> **Administration** -> **Scheduled Imports**
+
+2. Click on **New**
+
+    ![](./images/section1/scheduled_import_new.png)
+
+3. Set **Name** : Sales Import
+
+4. Select the **Data source** we created in Section 1.
+
+5. Check **Execute pre-import script and set the following **Pre script**
+
+    Script:
+    ```javascript
+    gs.log('Starting import with ' + import_set.name);
+    ```
+
+6. Check **Execute post-import script** and set the following **Post script**
+    
+    Script:
+    ```javascript
+    gs.log('Finishing import with ' + import_set.name);
+    ```
+
+7. Right click on top panel and click **Save**
+
+    ![](./images/section1/scheduled_import.png) 
+
+ 
