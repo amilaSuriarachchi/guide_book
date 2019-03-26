@@ -71,11 +71,11 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
     ![](./images/section1/transform_map_new.png)
 
-3. Enter **Name** : Sales Transform Map**
+3. Enter **Name** : Sales Transform Map
 
 4. Set **Target table** : Sales[sn_sales_sales]
 
-5. Clieck on **Auto Map Matching Fields**. This maps the staging table **Sales Data Source[sn_sales_sales_import_set]** fields to target table *Sales[sn_sales_sales]* fields.
+5. Clieck on **Auto Map Matching Fields**. This maps the staging table *Sales Data Source[sn_sales_sales_import_set]* fields to target table *Sales[sn_sales_sales]* fields.
 
 ## Creating a **Coalesce** field
 
