@@ -113,20 +113,107 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 4. Select the **Data source** we created in Section 1.
 
-5. Check **Execute pre-import script and set the following **Pre script**
+5. Check **Execute pre-import** script and set the following **Pre script**
 
     ```javascript
-    gs.log('Starting import with ' + import_set.name);
+    gs.info('Starting import with ' + import_set.number);
     ```
 
 6. Check **Execute post-import script** and set the following **Post script**
     
     ```javascript
-    gs.log('Finishing import with ' + import_set.name);
+    gs.info('Finishing import with ' + import_set.number);
     ```
 
 7. Right click on top panel and click **Save**
 
     ![](./images/section2/scheduled_import.png) 
+
+## Running the **Scheduled Import**
+
+1. Click on **Execute Now**. This starts the Schedule import as a back ground job.
+
+2. Goto **System Import Sets** -> **Advanced** -> **Import Sets**
+
+3. Click on *ISET0010002*. This is the import set created for the scheduled import. The **Import Set Rows** tab shows you all the import set rows and their state of processing. The **Import Set Runs** tab shows the statistics of curent import set processing.
+
+    ![](./images/section2/import_set_view.png)
+
+4. Observe the import set run progress slowly. We can diagnose such scenarios using **System Diagnostics**
+
+## Diagnose import set performance 
+
+1. Goto **System Diagnostics** -> **Stats** -> **Slow Scripts**. In this case we use **Slow Scripts**. But any of slow **Events**, **Mutex Locks**, **Queries**, **Scripts**, **Transactions** can be used in diagnosis.
+
+2. Click on **Average execution time (ms)** to sort the scripts with time.
+
+3. Locate the *sys_script:Process sales total* **Bussiness Rule**.
+
+4. Click on the *sys_script:Process sales total* script.
+
+5. Click on **Script source** preview.
+
+    ![](./images/section2/slow_script.png) 
+
+6. Click on **Open Record**
+
+    ![](./images/section2/business_rule.png) 
+
+7. Note that this business rule has a sleep which makes the transformation slow. We can deactivate this business rule at this point to make the transformation fast. But first lets see how to kill this process without doing that.
+
+
+## Stop Transformation process
+
+1. Goto **User Administration** -> **All Active Transactions**
+
+    ![](./images/section2/active_transactions.png)
+
+2. Right click on *System Trigger** transaction and select kill.
+
+3. Goto **System Import Sets** -> **Advanced** -> **Import Sets**
+
+4. Click on *ISET0010002*.
+
+5. Click on *Import Set Run*
+
+6. Click on **Import Log** tab
+
+7. Click on **Created** field to sort the messages with timestamp.
+
+    ![](./images/section2/transform_history.png)
+
+## Re Run **Scheduled Import**
+
+First we need to deactivate the **Business Rule** we detected at the diagnosing. We can deactivate the business rule or deactivate the **Business rules** for whole transformation. Here we use the later approach.
+
+1. Goto **System Import Sets** -> **Administration** -> **Transform Maps**
+
+2. Select *Sales Transform Map*
+
+3. Uncheck **Run business rules**
+
+4. Click **Update**
+
+5. Goto **System Import Sets** -> **Administration** -> **Scheduled Imports**
+
+6. Select *Sales Import*
+
+7. Click **Execute Now**
+
+8. Goto **System Import Sets** -> **Advanced** -> **Import Sets**
+
+9. Click on *ISET0010003*.
+
+10. Refresh the import set view until import is finished. Import is finished around 2 min time
+
+    ![](./images/section2/import_set_complete_view.png)
+
+11. Goto **System Logs** -> **System Log** -> **Application Logs**
+
+12. Locate following log statements
+
+    Finishing import with ISET0010003
+    Starting import with ISET0010003
+
 
  
