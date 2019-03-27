@@ -212,8 +212,88 @@ First we need to deactivate the **Business Rule** we detected at the diagnosing.
 
 12. Locate following log statements
 
-    Finishing import with ISET0010003
-    Starting import with ISET0010003
+    **Finishing import with ISET0010003**
+    **Starting import with ISET0010003**
 
+# Section 3 : Run the Scheduled Import Concurrently
 
- 
+## Section Goal
+
+Import process mainly has two steps. First it imports data from external data source to a staging table through an import set. Then it inserts or updates the import set data, into ServiceNow tables (target tables) using transform maps. The later process invokes associated business rules of the target table and may take considerable time to execute. 
+In the above example, we ran both these steps with the same scheduler thread. This process may take several days to complete when importing a huge data set (eg around 50 million records) to a target table with time consuming business rules. In order to improve performance in such a case, we can run the transformation part concurrently by enabling  **Concurrent Import**. In a concurrent import first, we divide the data into multiple import sets at the loading time. Then we push these import sets to **Import Set Job Queue**, so that **Import Set Transformer** jobs pick these import sets and process concurrently.
+In this section, first we see how to enable concurrent imports, then the concurrent import view to monitor the concurrent import progress and import set transformer jobs which process the import sets.
+
+## Enabling concurrent import
+
+1. Goto **System Import Sets** -> **Administration** -> **Scheduled Imports**
+
+2. Check **Concurrent Import**. This is the only required step. We will add following two steps to see how to access import set details in a concurrent import.
+
+3. Set the following as the **Pre script**
+   ```javascript
+    var msg = 'Concurrent import set number from pre script ' + import_set.number + ' ';
+    var importSetGr = new GlideRecord('sys_import_set');
+    importSetGr.addQuery('concurrent_import_set', import_set.sys_id);
+    importSetGr.query();
+    while (importSetGr.next())
+	msg += importSetGr.number + ' ';
+    gs.info(msg);
+    ```
+
+4. Set the following as the **Post script**
+
+   ```javascript
+    var msg = 'Concurrent import set number from post script ' + import_set.number + ' ';
+    var importSetGr = new GlideRecord('sys_import_set');
+    importSetGr.addQuery('concurrent_import_set', import_set.sys_id);
+    importSetGr.query();
+    while (importSetGr.next())
+	msg += importSetGr.number + ' ';
+    gs.info(msg);
+    ```
+
+5. Click **Execute Now**. This starts the concurrent import process.
+
+6. Goto **System Import Sets** -> **Advanced** -> **Concurrent Import Sets**
+
+7. Select the CISET0010001. This gives details about the **Import Sets**, **Concurrent Import Set Jobs** and **Transform Histories**
+
+8. Click on **Transform Histories**. This view shows how much time it has spend on transforming each import set. 
+
+    ![](./images/section3/concurrent_import_set_veiw.png)
+
+## Understanding how concurrent import works
+
+1. **Concurrent Import** break the data into multiple import sets. To see the **Import Sets**, Goto **System Import Sets** -> **Advanced** -> **Concurrent Import Sets**.
+
+2. Select the CISET0010001.
+
+    ![](./images/section3/concurrent_import_set_view_import_set.png) 
+
+3. After loading data into multiple **Import Sets**, it enqueue these **Import Sets** to **Concurrent Import Set Jobs** queue. Click on **Concurrent Import Set Jobs** to see the jobs in the queue.
+
+    ![](./images/section3/concurrent_import_set_view_queue.png)
+
+4. There are set of schedlued task periodically poll the above queue.
+
+5. Goto **System Scheduler** -> **Scheduled Jobs**
+
+6. Search Scheduled jobs with **Name** : Import Set Transformer. There are four **Import Set Transformer** jobs. Here we assume this is a single node cluster and for multinode cluster it will be it is 2 * (No of Active Nodes + 1 ).  
+
+    ![](./images/section3/import_set_transformer_jobs.png)
+
+7. Click on a **Import Set Transformer** job in red *Ready* state. These jobs are called parent jobs and have two such jobs by default. Note **System ID** of this task set to **ACTIVE NODES**. When the system starts up this creates a child task for each active node.
+
+    ![](./images/section3/parent_job.png)
+
+8. Click on a **Import Set Transformer** job in black *Ready* state. These jobs are called child jobs created from above parent jobs. These jobs has a **System ID** with an instance id. 
+
+    ![](./images/sectchild_job.png)
+
+9. Click on **Job ID** preview. This shows the *Import Set Transformer Job**.
+
+    ![](./images/import_set_transformer_job.png)
+
+10. This job referes to the real java implementation class. So the each scheduled task periodically invokes the implementation class and that polls the job queue. If an import set found to execute it will execute that.
+
+    
