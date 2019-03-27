@@ -212,8 +212,8 @@ First we need to deactivate the **Business Rule** we detected at the diagnosing.
 
 12. Locate following log statements
 
-    **Finishing import with ISET0010003**  
-    **Starting import with ISET0010003**
+    *Finishing import with ISET0010003*  
+    *Starting import with ISET0010003*
 
 # Section 3 : Run the Scheduled Import Concurrently
 
@@ -295,11 +295,11 @@ In this section, first we see how to enable concurrent imports, then the concurr
 
 8. Click on a **Import Set Transformer** job in black *Ready* state. These jobs are called child jobs created from above parent jobs. These jobs has a **System ID** with an instance id. 
 
-    ![](./images/sectchild_job.png)
+    ![](./images/section3/sectchild_job.png)
 
 9. Click on **Job ID** preview. This shows the **Import Set Transformer Job**.
 
-    ![](./images/import_set_transformer_job.png)
+    ![](./images/section3/import_set_transformer_job.png)
 
 10. This job referes to the real java implementation class. So the each scheduled task periodically invokes the implementation class and that polls the job queue. If an import set found to execute it will execute that.
 
