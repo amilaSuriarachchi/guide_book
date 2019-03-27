@@ -212,15 +212,15 @@ First we need to deactivate the **Business Rule** we detected at the diagnosing.
 
 12. Locate following log statements
 
-    **Finishing import with ISET0010003**
+    **Finishing import with ISET0010003**  
     **Starting import with ISET0010003**
 
 # Section 3 : Run the Scheduled Import Concurrently
 
 ## Section Goal
 
-Import process mainly has two steps. First it imports data from external data source to a staging table through an import set. Then it inserts or updates the import set data, into ServiceNow tables (target tables) using transform maps. The later process invokes associated business rules of the target table and may take considerable time to execute. 
-In the above example, we ran both these steps with the same scheduler thread. This process may take several days to complete when importing a huge data set (eg around 50 million records) to a target table with time consuming business rules. In order to improve performance in such a case, we can run the transformation part concurrently by enabling  **Concurrent Import**. In a concurrent import first, we divide the data into multiple import sets at the loading time. Then we push these import sets to **Import Set Job Queue**, so that **Import Set Transformer** jobs pick these import sets and process concurrently.
+Import process mainly has two steps. First it imports data from external data source to a staging table through an import set. Then it inserts or updates the import set data, into ServiceNow tables (target tables) using transform maps. The later process invokes associated business rules of the target table and may take considerable time to execute.  
+In the above example, we ran both these steps with the same scheduler thread. This process may take several days to complete when importing a huge data set (eg around 50 million records) to a target table with time consuming business rules. In order to improve performance in such a case, we can run the transformation part concurrently by enabling  **Concurrent Import**. In a concurrent import first, we divide the data into multiple import sets at the loading time. Then we push these import sets to **Import Set Job Queue**, so that **Import Set Transformer** jobs pick these import sets and process concurrently.  
 In this section, first we see how to enable concurrent imports, then the concurrent import view to monitor the concurrent import progress and import set transformer jobs which process the import sets.
 
 ## Enabling concurrent import
@@ -262,6 +262,13 @@ In this section, first we see how to enable concurrent imports, then the concurr
 
     ![](./images/section3/concurrent_import_set_veiw.png)
 
+9. Goto **System Logs** -> **System Log** -> **Application Logs**
+
+10. Locate following logs
+
+    *Concurrent import set number from post script CISET0010001 ISET0010007 ISET0010008*  
+    *Concurrent import set number from pre script CISET0010001 ISET0010007 ISET0010008*
+
 ## Understanding how concurrent import works
 
 1. **Concurrent Import** break the data into multiple import sets. To see the **Import Sets**, Goto **System Import Sets** -> **Advanced** -> **Concurrent Import Sets**.
@@ -290,7 +297,7 @@ In this section, first we see how to enable concurrent imports, then the concurr
 
     ![](./images/sectchild_job.png)
 
-9. Click on **Job ID** preview. This shows the *Import Set Transformer Job**.
+9. Click on **Job ID** preview. This shows the **Import Set Transformer Job**.
 
     ![](./images/import_set_transformer_job.png)
 
