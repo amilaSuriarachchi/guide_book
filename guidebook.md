@@ -295,7 +295,7 @@ In this section, first we see how to enable concurrent imports, then the concurr
 
 8. Click on a **Import Set Transformer** job in black *Ready* state. These jobs are called child jobs created from above parent jobs. These jobs has a **System ID** with an instance id. 
 
-    ![](./images/section3/sectchild_job.png)
+    ![](./images/section3/child_job.png)
 
 9. Click on **Job ID** preview. This shows the **Import Set Transformer Job**.
 
