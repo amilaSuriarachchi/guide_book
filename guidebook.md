@@ -5,14 +5,6 @@ Before we get started building concurrent imports, we need to get our lab instan
 
 In this lab first you will create a Data Source, Transform Map and a Scheduled Import. Then run the Scheduled Import with and without concurrent import. 
 
-## Clone the git repository to your machine
-
-1. Run the following command
-
-    `git clone https://github.com/amilaSuriarachchi/knowledge.git knowledge`
-
-2. This downloads the lab content to your machine
-
 ## Import the lab set up to your machine
 
 1. Goto **System Application -> Studio**
@@ -54,6 +46,8 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 3. Enter **Name** : Sales Data Source
 
 4. Enter **Import set table label** : Sales Import Set
+
+5. Download [50000 Sales Data](./data/50000_Sales_Records.csv)
 
 5. Click on **Manage Attachments** and choose `50000 Sales Records.csv` from the application cloned location.
 
@@ -303,4 +297,12 @@ In this section, first we see how to enable concurrent imports, then the concurr
 
 10. This job referes to the real java implementation class. So the each scheduled task periodically invokes the implementation class and that polls the job queue. If an import set found to execute it will execute that.
 
-    
+# Section 4 : Enabling source partitioning
+
+## Section Goal
+
+By default, **Concurrent Import** partition data into multiple import set in **Round Robin** manner and transform concurrently. This does not allow at least certain group of records exectue in the sequencial order. Source partitiong allows users to create import sets so that records belongs to a certain group always belongs to one import set. Since all data in one import set, data rows for a given group process in sequencial order.  
+In this section, we see how we can create import sets, so that the records from same region belongs to one import set. When runing the **Scheduled import** those records process in the order given in the original file.  
+
+## Enabling Source Partitioning
+ 
