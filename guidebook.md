@@ -47,7 +47,7 @@ In this lab first you will create a Data Source, Transform Map and a Scheduled I
 
 4. Enter **Import set table label** : Sales Import Set
 
-5. Download [50000 Sales Data](./data/50000_Sales_Records.csv)
+5. Download [50000 Sales Data](./data/50000_Sales_Records.zip)
 
 5. Click on **Manage Attachments** and choose `50000 Sales Records.csv` from the application cloned location.
 
